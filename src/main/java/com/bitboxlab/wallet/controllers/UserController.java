@@ -37,6 +37,13 @@ public class UserController {
         return new ResponseEntity<>("Account registered", HttpStatus.OK);
     }
 
+    @PostMapping("/info")
+    public ResponseEntity<User> getUserByAuth(Authentication authentication){
+        User user = repository.findByEmail(authentication.getName());
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<ArrayList<User>> searchForUser(@RequestParam(value="user") String user){
         return new ResponseEntity<>(repository.findAllByNameContainingOrEmailContainingOrSurnameContaining(user, user, user), HttpStatus.OK);
