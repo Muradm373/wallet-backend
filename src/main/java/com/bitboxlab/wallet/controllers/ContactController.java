@@ -22,6 +22,7 @@ public class ContactController {
 
 
 
+    @CrossOrigin
     @PostMapping("/contact")
     public ResponseEntity<String> addContactToUser(Authentication authentication, @RequestBody Contact contact){
         User user = repository.findByEmail(authentication.getName());
@@ -33,6 +34,7 @@ public class ContactController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/contact", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Contact>> getContactsOfUser(Authentication authentication){
         User user = repository.findByEmail(authentication.getName());
@@ -41,6 +43,7 @@ public class ContactController {
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/contact/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Contact> editContact(Authentication authentication, @RequestBody Contact contact){
         contactRepository.save(contact);
@@ -48,6 +51,7 @@ public class ContactController {
         return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/contact/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteContact(Authentication authentication, @RequestBody Contact contact){
         contactRepository.delete(contact);

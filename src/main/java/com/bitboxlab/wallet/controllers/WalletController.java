@@ -24,6 +24,7 @@ public class WalletController {
 
 
 
+    @CrossOrigin
     @PostMapping("/wallet")
     public ResponseEntity<Wallet> addContactToUser(Authentication authentication, @RequestBody Wallet wallet){
         User user = repository.findByEmail(authentication.getName());
@@ -35,6 +36,7 @@ public class WalletController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/wallet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Wallet>> getWalletsOfUser(Authentication authentication){
         User user = repository.findByEmail(authentication.getName());
@@ -44,6 +46,7 @@ public class WalletController {
     }
 
 
+    @CrossOrigin
     @RequestMapping(value = "/wallet/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Wallet> editWallet(Authentication authentication, @RequestBody Wallet wallet){
         walletRepository.save(wallet);
@@ -51,6 +54,7 @@ public class WalletController {
         return new ResponseEntity<>(wallet, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/wallet/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteWallet(Authentication authentication, @RequestBody Wallet wallet){
         walletRepository.delete(wallet);

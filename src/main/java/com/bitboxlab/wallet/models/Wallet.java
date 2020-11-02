@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Table(name="Wallets")
 public class Wallet implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

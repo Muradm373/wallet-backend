@@ -28,6 +28,7 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
+    @CrossOrigin
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody User user)
     {
@@ -37,6 +38,7 @@ public class UserController {
         return new ResponseEntity<>("Account registered", HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping("/info")
     public ResponseEntity<User> getUserByAuth(Authentication authentication){
         User user = repository.findByEmail(authentication.getName());
@@ -44,6 +46,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping("/search")
     public ResponseEntity<ArrayList<User>> searchForUser(@RequestParam(value="user") String user){
         return new ResponseEntity<>(repository.findAllByNameContainingOrEmailContainingOrSurnameContaining(user, user, user), HttpStatus.OK);

@@ -18,6 +18,10 @@ public class Contact implements Serializable {
     @Column(name="name")
     private String name;
 
+
+    @Column(name="wallet")
+    private String wallet;
+
     @Column(name="address")
     private String address;
 
@@ -61,4 +65,13 @@ public class Contact implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(String wallet) {
+        this.wallet = wallet;
+    }
+
 }
