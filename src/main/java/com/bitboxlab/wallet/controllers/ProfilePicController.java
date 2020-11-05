@@ -20,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-
+@CrossOrigin
 @Controller
 public class ProfilePicController {
 
     @Autowired
     private ImageStorageService storageService;
 
-    @CrossOrigin
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
@@ -42,7 +41,6 @@ public class ProfilePicController {
         }
     }
 
-    @CrossOrigin
     @GetMapping("/files")
     public ResponseEntity<List<ResponseFile>> getListFiles() {
         List<ResponseFile> files = storageService.getAllFiles().map(dbFile -> {
@@ -62,7 +60,6 @@ public class ProfilePicController {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
-    @CrossOrigin
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         ProfilePic fileDB = storageService.getFile(id);
