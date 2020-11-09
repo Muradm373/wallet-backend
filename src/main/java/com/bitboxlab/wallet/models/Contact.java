@@ -11,8 +11,8 @@ public class Contact implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="email")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="email", nullable=false)
     private User user;
 
     @Column(name="name")
