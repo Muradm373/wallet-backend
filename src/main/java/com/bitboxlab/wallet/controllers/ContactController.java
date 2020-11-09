@@ -25,32 +25,29 @@ public class ContactController {
     public ResponseEntity<String> addContactToUser(Authentication authentication, @RequestBody Contact contact){
         User user = repository.findByEmail(authentication.getName());
         contact.setUser(user);
-
         contactRepository.save(contact);
-
-        return new ResponseEntity<>("Contact added", HttpStatus.OK);
+        return new ResponseEntity<>("Contact added", HttpStatus.CREATED);
 
     }
 
-    @RequestMapping(value = "/contact", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/contacts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Contact>> getContactsOfUser(Authentication authentication){
         User user = repository.findByEmail(authentication.getName());
         List<Contact> contacts = contactRepository.findByUser(user);
-
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/contact/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/contact", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Contact> editContact(Authentication authentication, @RequestBody Contact contact){
+        User user = repository.findByEmail(authentication.getName());
+        contact.setUser(user);
         contactRepository.save(contact);
-
-        return new ResponseEntity<>(contact, HttpStatus.OK);
+        return new ResponseEntity<>(contact, HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/contact/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteContact(Authentication authentication, @RequestBody Contact contact){
-        contactRepository.delete(contact);
+    @RequestMapping(value = "/contact", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteContact(@RequestBody Contact contact){
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>("OK", HttpStatus.NO_CONTENT);
     }
 }

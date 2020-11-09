@@ -32,9 +32,12 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody User user)
     {
+        if(repository.findByEmail(user.getEmail()) !=null)
+        {
+            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
+        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         repository.save(user);
-
         return new ResponseEntity<>("Account registered", HttpStatus.OK);
     }
 
