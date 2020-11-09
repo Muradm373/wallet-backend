@@ -45,9 +45,14 @@ public class ContactController {
         return new ResponseEntity<>(contact, HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/contact", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteContact(@RequestBody Contact contact){
+    @RequestMapping(value = "/contacts/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteContact(@PathVariable Long id){
+        Contact contact = contactRepository.findById(id).orElse(null);
+        if(contact!=null) {
+            contactRepository.delete(contact);
+            return new ResponseEntity<>("OK", HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>("Contact not found", HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>("OK", HttpStatus.NO_CONTENT);
     }
 }
