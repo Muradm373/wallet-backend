@@ -42,17 +42,23 @@ public class WalletController {
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/wallet/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wallet", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Wallet> editWallet(Authentication authentication, @RequestBody Wallet wallet){
+        User user = repository.findByEmail(authentication.getName());
+        wallet.setUser(user);
         walletRepository.save(wallet);
 
-        return new ResponseEntity<>(wallet, HttpStatus.OK);
+        return new ResponseEntity<>(wallet, HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/wallet/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteWallet(Authentication authentication, @RequestBody Wallet wallet){
-        walletRepository.delete(wallet);
+    @RequestMapping(value = "/wallets/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteWallet(@PathVariable Long id){
+        Wallet wallet = walletRepository.findById(id).orElse(null);
+        if(wallet!=null) {
+            walletRepository.delete(wallet);
+            return new ResponseEntity<>("OK", HttpStatus.NO_CONTENT);
+        }
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>("Wallet not found", HttpStatus.BAD_REQUEST);
     }
 }

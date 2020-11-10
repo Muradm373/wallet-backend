@@ -16,7 +16,6 @@ public class Wallet implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="email", nullable=false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
 
