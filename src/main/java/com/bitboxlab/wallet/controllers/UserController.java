@@ -2,6 +2,7 @@ package com.bitboxlab.wallet.controllers;
 
 import com.bitboxlab.wallet.models.Contact;
 import com.bitboxlab.wallet.models.User;
+import com.bitboxlab.wallet.models.Wallet;
 import com.bitboxlab.wallet.repo.ContactRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
 import com.bitboxlab.wallet.utils.JwtUtil;
@@ -51,6 +52,31 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<ArrayList<User>> searchForUser(@RequestParam(value="user") String user){
         return new ResponseEntity<>(repository.findAllByNameContainingOrEmailContainingOrSurnameContaining(user, user, user), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> editUser(Authentication authentication, @RequestBody User userUpdated){
+        User user = repository.findByEmail(authentication.getName());
+        user.setEmail(userUpdated.getEmail());
+        user.setName(userUpdated.getName());
+        user.setSurname(userUpdated.getSurname());
+        user.setAddress(userUpdated.getAddress());
+        user.setContact(userUpdated.getContact());
+        user.setPrivateAccount(userUpdated.isPrivateAccount());
+        repository.save(user);
+
+        return new ResponseEntity<>(user, HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        User user = repository.findById(id).orElse(null);
+        if(user != null) {
+            repository.delete(user);
+            return new ResponseEntity<>("OK", HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>("Wallet not found", HttpStatus.BAD_REQUEST);
     }
 
 
