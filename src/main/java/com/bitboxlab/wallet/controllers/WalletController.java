@@ -31,7 +31,6 @@ public class WalletController {
         walletRepository.save(wallet);
 
         return new ResponseEntity<>(wallet, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/wallet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,6 +39,16 @@ public class WalletController {
         List<Wallet> contacts = walletRepository.findByUser(user);
 
         return new ResponseEntity<>(contacts, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/wallet-search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Wallet>> getWalletsOfUser(@RequestParam(value="email") String email){
+        User user = repository.findByEmail(email);
+        List<Wallet> wallets = null;
+        if(!user.isPrivateAccount())
+            wallets = walletRepository.findByUserAndPrivateWalletFalse(user);
+
+        return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/wallet", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

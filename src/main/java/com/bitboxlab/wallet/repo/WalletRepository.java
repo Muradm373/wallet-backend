@@ -9,5 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
+    List<Wallet> findByUserAndPrivateWalletFalse(User user);
     List<Wallet> findByUser(User user);
+
 }
