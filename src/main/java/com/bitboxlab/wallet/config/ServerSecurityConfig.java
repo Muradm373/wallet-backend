@@ -65,6 +65,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers(HttpMethod.GET, "/files/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new OAuthConfig(authenticationManager()))
