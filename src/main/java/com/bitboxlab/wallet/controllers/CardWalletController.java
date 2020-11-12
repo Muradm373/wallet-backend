@@ -50,7 +50,7 @@ public class CardWalletController {
         return new ResponseEntity<>(wallet, HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/wallet_card/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wallets_card/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteWallet(@PathVariable Long id){
         CardWallet wallet = cardWalletRepository.findById(id).orElse(null);
         if(wallet!=null) {

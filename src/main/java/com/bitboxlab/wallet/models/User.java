@@ -39,6 +39,9 @@ public class User implements Serializable {
     @Column(name="private")
     private boolean privateAccount = false;
 
+    @Column(name="avatar")
+    private String avatarUrl = "";
+
     public User() {
     }
 
@@ -110,5 +113,13 @@ public class User implements Serializable {
 
     public void setPrivateAccount(boolean privateAccount) {
         this.privateAccount = privateAccount;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

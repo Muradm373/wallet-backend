@@ -4,13 +4,15 @@ public class ResponseFile {
     private String name;
     private String url;
     private String type;
+    private String email;
     private long size;
 
-    public ResponseFile(String name, String url, String type, long size) {
+    public ResponseFile(String name, String url, String type, long size, String email) {
         this.name = name;
         this.url = url;
         this.type = type;
         this.size = size;
+        this.email = email;
     }
 
     public String getName() {
@@ -43,5 +45,13 @@ public class ResponseFile {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

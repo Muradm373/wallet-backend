@@ -17,16 +17,19 @@ public class ProfilePic {
 
     private String type;
 
+    private String email;
+
     @Lob
     private byte[] data;
 
     public ProfilePic() {
     }
 
-    public ProfilePic(String name, String type, byte[] data) {
+    public ProfilePic(String name, String type, byte[] data, String email) {
         this.name = name;
         this.type = type;
         this.data = data;
+        this.email = email;
     }
 
     public String getId() {
@@ -57,4 +60,11 @@ public class ProfilePic {
         this.data = data;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

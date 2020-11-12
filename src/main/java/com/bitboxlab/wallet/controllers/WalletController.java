@@ -24,7 +24,7 @@ public class WalletController {
     UserRepository repository;
 
     @PostMapping("/wallet")
-    public ResponseEntity<Wallet> addContactToUser(Authentication authentication, @RequestBody Wallet wallet){
+    public ResponseEntity<Wallet> addCryptoWallet(Authentication authentication, @RequestBody Wallet wallet){
         User user = repository.findByEmail(authentication.getName());
         wallet.setUser(user);
 

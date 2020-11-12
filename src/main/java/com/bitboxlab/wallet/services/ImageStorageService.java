@@ -16,9 +16,9 @@ public class ImageStorageService {
     @Autowired
     private ProfilePicRepository fileDBRepository;
 
-    public ProfilePic store(MultipartFile file) throws IOException {
+    public ProfilePic store(MultipartFile file, String email) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        ProfilePic FileDB = new ProfilePic(fileName, file.getContentType(), file.getBytes());
+        ProfilePic FileDB = new ProfilePic(fileName, file.getContentType(), file.getBytes(), email);
 
         return fileDBRepository.save(FileDB);
     }
