@@ -61,11 +61,11 @@ public class TransferController {
 //    }
 
     @GetMapping("/transfers/{id}")
-    public ResponseEntity<String> getTransfer(@PathVariable String id) {
+    public ResponseEntity<Transfer> getTransfer(@PathVariable String id) {
         Transfer transfer = transferStorageService.getTransfer(id);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; transfer=\"" + transfer.getId() + "\"")
-                .body(transfer.getTransferDetails());
+                .body(transfer);
     }
 }
