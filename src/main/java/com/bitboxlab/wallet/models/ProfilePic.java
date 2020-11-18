@@ -5,8 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "profilepics")
+    @Entity
+    @Table(name = "profilepics")
 public class ProfilePic {
     @Id
     @GeneratedValue(generator = "uuid")

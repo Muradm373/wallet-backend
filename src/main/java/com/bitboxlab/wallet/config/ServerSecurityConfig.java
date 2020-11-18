@@ -66,6 +66,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.GET, "/files/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/spring-security-rest/api/v2/api-docs").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new OAuthConfig(authenticationManager()))
