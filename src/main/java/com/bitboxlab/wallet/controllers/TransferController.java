@@ -2,9 +2,11 @@ package com.bitboxlab.wallet.controllers;
 
 import com.bitboxlab.wallet.models.ProfilePic;
 import com.bitboxlab.wallet.models.Transfer;
+import com.bitboxlab.wallet.models.TransferResponse;
 import com.bitboxlab.wallet.models.User;
 import com.bitboxlab.wallet.models.message.ResponseFile;
 import com.bitboxlab.wallet.models.message.ResponseMessage;
+import com.bitboxlab.wallet.repo.UserRepository;
 import com.bitboxlab.wallet.services.ImageStorageService;
 import com.bitboxlab.wallet.services.TransferStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class TransferController {
     @Autowired
     private TransferStorageService transferStorageService;
+    @Autowired
+    UserRepository repository;
 
     @PostMapping("/create-transfer")
     public ResponseEntity<ResponseMessage> createTransfer(Authentication authentication,@RequestBody Transfer transferDetails) {
@@ -61,11 +65,13 @@ public class TransferController {
 //    }
 
     @GetMapping("/transfers/{id}")
-    public ResponseEntity<Transfer> getTransfer(@PathVariable String id) {
+    public ResponseEntity<TransferResponse> getTransfer(@PathVariable String id) {
         Transfer transfer = transferStorageService.getTransfer(id);
+        User user = repository.findById(transfer.getUserId()).get();
+        TransferResponse transferResponse = new TransferResponse(transfer, user);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; transfer=\"" + transfer.getId() + "\"")
-                .body(transfer);
+                .body(transferResponse);
     }
 }

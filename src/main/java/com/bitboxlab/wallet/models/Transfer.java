@@ -21,11 +21,11 @@ public class Transfer {
     String cardnumber;
     String name;
     String address;
-    String userId;
+    Long userId;
     String email;
     String username;
 
-    public Transfer(String id, String transactionType, String youSend, String theyReceive, String cardnumber, String name, String address, String userId, String email, String username) {
+    public Transfer(String id, String transactionType, String youSend, String theyReceive, String cardnumber, String name, String address, Long userId, String email, String username) {
         this.id = id;
         this.transactionType = transactionType;
         this.youSend = youSend;
@@ -97,11 +97,11 @@ public class Transfer {
         this.address = address;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
