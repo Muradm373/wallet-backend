@@ -1,11 +1,9 @@
 package com.bitboxlab.wallet.controllers;
 
-import com.bitboxlab.wallet.models.ProfilePic;
-import com.bitboxlab.wallet.models.Transfer;
-import com.bitboxlab.wallet.models.TransferResponse;
-import com.bitboxlab.wallet.models.User;
+import com.bitboxlab.wallet.models.*;
 import com.bitboxlab.wallet.models.message.ResponseFile;
 import com.bitboxlab.wallet.models.message.ResponseMessage;
+import com.bitboxlab.wallet.repo.NotificationRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
 import com.bitboxlab.wallet.services.ImageStorageService;
 import com.bitboxlab.wallet.services.TransferStorageService;
@@ -29,6 +27,8 @@ public class TransferController {
     private TransferStorageService transferStorageService;
     @Autowired
     UserRepository repository;
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @PostMapping("/create-transfer")
     public ResponseEntity<ResponseMessage> createTransfer(Authentication authentication,@RequestBody Transfer transferDetails) {
@@ -44,25 +44,25 @@ public class TransferController {
         }
     }
 
-//    @GetMapping("/files")
-//    public ResponseEntity<List<ResponseFile>> getListFiles() {
-//        List<ResponseFile> files = storageService.getAllFiles().map(dbFile -> {
-//            String fileDownloadUri = ServletUriComponentsBuilder
-//                    .fromCurrentContextPath()
-//                    .path("/files/")
-//                    .path(dbFile.getId())
-//                    .toUriString();
-//
-//            return new ResponseFile(
-//                    dbFile.getName(),
-//                    fileDownloadUri,
-//                    dbFile.getType(),
-//                    dbFile.getData().length,
-//                    dbFile.getEmail());
-//        }).collect(Collectors.toList());
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(files);
-//    }
+    @PostMapping("/create-notification")
+    public ResponseEntity<ResponseMessage> createNotification(@RequestBody PaymentNotificationRequest notification) {
+        String message = "";
+        try {
+            Transfer transfer = transferStorageService.store(notification.getTransfer());
+            for (String userEmail: notification.getUsers()) {
+                User user = repository.findByEmail(userEmail);
+                PaymentNotification paymentNotification = new PaymentNotification(transfer, user);
+                notificationRepository.save(paymentNotification);
+            }
+
+            message = transfer.getId();
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+        } catch (Exception e) {
+            message = "Could not create transfer!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+        }
+    }
+
 
     @GetMapping("/transfers/{id}")
     public ResponseEntity<TransferResponse> getTransfer(@PathVariable String id) {
