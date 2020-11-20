@@ -31,7 +31,6 @@ public class PaymentNotificationController {
             User user = userRepository.findByEmail(authentication.getName());
 
             List<PaymentNotification> paymentNotifications = notificationRepository.findAllByUser(user);
-            System.out.println(paymentNotifications.size());
             return ResponseEntity.status(HttpStatus.OK).body(paymentNotifications);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,7 @@ public class TransferController {
             Transfer transfer = transferStorageService.store(notification.getTransfer());
             for (String userEmail: notification.getUsers()) {
                 User user = repository.findByEmail(userEmail);
-                PaymentNotification paymentNotification = new PaymentNotification(transfer, user);
+                PaymentNotification paymentNotification = new PaymentNotification(transfer, user, LocalDateTime.now());
                 notificationRepository.save(paymentNotification);
             }
 
