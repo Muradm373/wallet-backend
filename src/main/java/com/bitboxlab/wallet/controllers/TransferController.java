@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class TransferController {
     UserRepository repository;
     @Autowired
     NotificationRepository notificationRepository;
+    @Autowired private SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/create-transfer")
     public ResponseEntity<ResponseMessage> createTransfer(Authentication authentication,@RequestBody Transfer transferDetails) {
@@ -54,9 +56,16 @@ public class TransferController {
                 User user = repository.findByEmail(userEmail);
                 PaymentNotification paymentNotification = new PaymentNotification(transfer, user, LocalDateTime.now());
                 notificationRepository.save(paymentNotification);
+
+                System.out.println( paymentNotification.getUser().getEmail()+"/queue/messages");
+
+                messagingTemplate.convertAndSendToUser(
+                        paymentNotification.getUser().getEmail(),"/queue/messages",
+                        paymentNotification);
             }
 
             message = transfer.getId();
+
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
             message = "Could not create transfer!";
