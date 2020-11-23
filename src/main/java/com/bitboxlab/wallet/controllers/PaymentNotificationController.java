@@ -8,6 +8,9 @@ import com.bitboxlab.wallet.models.message.ResponseMessage;
 import com.bitboxlab.wallet.repo.NotificationRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +29,12 @@ public class PaymentNotificationController {
     NotificationRepository notificationRepository;
 
     @GetMapping("/notifications")
-    public ResponseEntity<List<PaymentNotification>> getNotifications(Authentication authentication) {
+    public ResponseEntity<List<PaymentNotification>> getNotifications(Authentication authentication, @RequestParam(value="page") int page) {
+        Pageable pageWithFiveNotifications = PageRequest.of(page, 5,  Sort.by("id").descending());
         try {
             User user = userRepository.findByEmail(authentication.getName());
 
-            List<PaymentNotification> paymentNotifications = notificationRepository.findAllByUser(user);
+            List<PaymentNotification> paymentNotifications = notificationRepository.findAllByUser(user, pageWithFiveNotifications);
             return ResponseEntity.status(HttpStatus.OK).body(paymentNotifications);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
