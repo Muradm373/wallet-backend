@@ -28,6 +28,14 @@ public class ProfilePicController {
     @Autowired
     UserRepository userRepository;
 
+    /**
+     *
+     * Uploading profile picture to the database and assigning it to user
+     * @param authentication
+     * Berarer token of the logged in user
+     * @param file
+     * Profile picture file
+     */
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(Authentication authentication, @RequestParam("file") MultipartFile file) {
         String message = "";
@@ -46,6 +54,9 @@ public class ProfilePicController {
         }
     }
 
+    /**
+     * Get all files from the database and assigned users
+     */
     @GetMapping("/files")
     public ResponseEntity<List<ResponseFile>> getListFiles() {
         List<ResponseFile> files = storageService.getAllFiles().map(dbFile -> {
@@ -66,6 +77,11 @@ public class ProfilePicController {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
+    /**
+     * Get profile picture of the user by id
+     * @param id
+     * Profile picture id
+     */
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         ProfilePic fileDB = storageService.getFile(id);
@@ -75,6 +91,11 @@ public class ProfilePicController {
                 .body(fileDB.getData());
     }
 
+
+    /**
+     * Remove profile picture of authenticated user
+     * @param authentication
+     */
     @DeleteMapping("/profilepic")
     public ResponseEntity<ResponseMessage> removeProfilePic(Authentication authentication) {
         String message = "";

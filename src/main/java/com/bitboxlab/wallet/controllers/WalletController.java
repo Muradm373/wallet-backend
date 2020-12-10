@@ -23,6 +23,13 @@ public class WalletController {
     @Autowired
     UserRepository repository;
 
+
+    /**
+     * Adding wallet for cryptocurrency transfers
+     * @param authentication
+     * @param wallet
+     * @return status code for operation
+     */
     @PostMapping("/wallet")
     public ResponseEntity<Wallet> addCryptoWallet(Authentication authentication, @RequestBody Wallet wallet){
         User user = repository.findByEmail(authentication.getName());

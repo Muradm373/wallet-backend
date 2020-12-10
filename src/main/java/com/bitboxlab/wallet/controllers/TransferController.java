@@ -33,6 +33,15 @@ public class TransferController {
     NotificationRepository notificationRepository;
     @Autowired private SimpMessagingTemplate messagingTemplate;
 
+
+    /**
+     * Creating money transfer request
+     * @param authentication
+     * User authentication token
+     * @param transferDetails
+     * Details of the requested transfer
+     * @return status code of creating a transfer
+     */
     @PostMapping("/create-transfer")
     public ResponseEntity<ResponseMessage> createTransfer(Authentication authentication,@RequestBody Transfer transferDetails) {
         String message = "";
@@ -47,6 +56,12 @@ public class TransferController {
         }
     }
 
+    /**
+     * Creating push notification for money transfer request
+     * @param notification
+     * Notification details view Notification model
+     * @return status code for notification creation
+     */
     @PostMapping("/create-notification")
     public ResponseEntity<ResponseMessage> createNotification(@RequestBody PaymentNotificationRequest notification) {
         String message = "";
@@ -74,6 +89,11 @@ public class TransferController {
     }
 
 
+    /**
+     * Get transfer details by id
+     * @param id
+     * @return details of transfer
+     */
     @GetMapping("/transfers/{id}")
     public ResponseEntity<TransferResponse> getTransfer(@PathVariable String id) {
         Transfer transfer = transferStorageService.getTransfer(id);

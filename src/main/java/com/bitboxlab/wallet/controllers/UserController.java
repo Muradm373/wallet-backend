@@ -30,6 +30,11 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
+    /**
+     * Create user account
+     * @param user
+     * @return status code for registration
+     */
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody User user)
     {
@@ -42,6 +47,11 @@ public class UserController {
         return new ResponseEntity<>("Account registered", HttpStatus.OK);
     }
 
+    /**
+     * Get user information details by his authentication token
+     * @param authentication
+     * @return User information details
+     */
     @PostMapping("/info")
     public ResponseEntity<User> getUserByAuth(Authentication authentication){
         User user = repository.findByEmail(authentication.getName());
@@ -49,6 +59,11 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    /**
+     * Search users by their username/email/name
+     * @param user
+     * @return List of users
+     */
     @GetMapping("/search")
     public ResponseEntity<ArrayList<User>> searchForUser(@RequestParam(value="user") String user){
         return new ResponseEntity<>(repository.findAllByNameContainingOrEmailContainingOrSurnameContaining(user, user, user), HttpStatus.OK);
