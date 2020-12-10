@@ -3,7 +3,6 @@ package com.bitboxlab.wallet.config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsUtils;
 
+import javax.persistence.Transient;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +22,7 @@ import java.util.Date;
 
 @CrossOrigin
 public class OAuthConfig extends UsernamePasswordAuthenticationFilter {
+    @Transient
     private final AuthenticationManager authenticationManager;
 
     public OAuthConfig(AuthenticationManager authenticationManager) {
@@ -46,7 +47,7 @@ public class OAuthConfig extends UsernamePasswordAuthenticationFilter {
         }
         catch(IOException e)
         {
-            throw new RuntimeException("Could not read request" + e);
+            return authenticationManager.authenticate(null);
         }
     }
 
@@ -55,6 +56,7 @@ public class OAuthConfig extends UsernamePasswordAuthenticationFilter {
      * Generating response header and body for requests
      * @param request Request sent by user
      */
+    @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) {
         String token = Jwts.builder()
                 .setSubject(((User) authentication.getPrincipal()).getUsername())

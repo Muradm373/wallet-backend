@@ -58,7 +58,7 @@ public class UserController {
      */
     @GetMapping("/search")
     public ResponseEntity<ArrayList<User>> searchForUser(@RequestParam(value="user") String user){
-        return new ResponseEntity<>(repository.findAllByNameContainingOrEmailContainingOrSurnameContaining(user, user, user), HttpStatus.OK);
+        return new ResponseEntity<>(repository.findAllByNameContainingOrEmailContainingOrSurnameContaining(user, user, user).get(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

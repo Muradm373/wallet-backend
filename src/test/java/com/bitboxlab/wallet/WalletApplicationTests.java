@@ -8,6 +8,7 @@ class WalletApplicationTests {
 
     @Test
     void contextLoads() {
+        assert(true);
     }
 
 }

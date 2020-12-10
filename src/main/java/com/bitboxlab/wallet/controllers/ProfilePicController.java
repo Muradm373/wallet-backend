@@ -35,7 +35,7 @@ public class ProfilePicController {
      */
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(Authentication authentication, @RequestParam("file") MultipartFile file) {
-        String message = "";
+        String message;
         String email = authentication.getName();
         try {
             ProfilePic picture = storageService.store(file, email);
@@ -97,8 +97,7 @@ public class ProfilePicController {
      */
     @DeleteMapping("/profilepic")
     public ResponseEntity<ResponseMessage> removeProfilePic(Authentication authentication) {
-        String message = "";
-        String email = authentication.getName();
+        String message;
         try {
             User user = userRepository.findByEmail(authentication.getName());
             user.setAvatarUrl("");

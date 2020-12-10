@@ -16,17 +16,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
     /**
-     * Get list of users by email
-     * @param email Email of searched user
-     * @return List of users with matching email
-     */
-    ArrayList<User> findAllByEmail(String email);
-
-    /**
      * Get user information by its identification number
      * @param id Identification number by which user will be searched
      * @return Details of searched user
      */
+    @Override
     Optional<User> findById(Long id);
 
     /**
@@ -36,5 +30,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param surname A target surname string for matching cases
      * @return List of users which have matching properties
      */
-    ArrayList<User> findAllByNameContainingOrEmailContainingOrSurnameContaining(String query, String email, String surname);
+    Optional<ArrayList<User>> findAllByNameContainingOrEmailContainingOrSurnameContaining(String query, String email, String surname);
 }

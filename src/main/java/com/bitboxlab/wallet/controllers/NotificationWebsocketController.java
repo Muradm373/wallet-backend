@@ -5,7 +5,6 @@ import com.bitboxlab.wallet.models.PaymentNotification;
 import com.bitboxlab.wallet.models.PaymentNotificationRequest;
 import com.bitboxlab.wallet.models.Transfer;
 import com.bitboxlab.wallet.models.User;
-import com.bitboxlab.wallet.models.message.ResponseMessage;
 import com.bitboxlab.wallet.repo.NotificationRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
 import com.bitboxlab.wallet.services.TransferStorageService;
@@ -29,7 +28,7 @@ public class NotificationWebsocketController {
      * @param notification Details of requested money transfer
      */
     @MessageMapping("/notify-request")
-    public void createNotification(@Payload PaymentNotificationRequest notification) {
+    public String createNotification(@Payload PaymentNotificationRequest notification) {
         String message = "";
         try {
             Transfer transfer = transferStorageService.store(notification.getTransfer());
@@ -49,6 +48,6 @@ public class NotificationWebsocketController {
             message = "Could not create transfer!";
         }
 
-        System.out.println(message);
+        return message;
     }
 }

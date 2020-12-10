@@ -28,7 +28,7 @@ public class ProfilePic {
     public ProfilePic(String name, String type, byte[] data, String email) {
         this.name = name;
         this.type = type;
-        this.data = data;
+        this.data = data.clone();
         this.email = email;
     }
 
@@ -53,11 +53,12 @@ public class ProfilePic {
     }
 
     public byte[] getData() {
-        return data;
+        final byte[] dataBitmap = data.clone();
+        return dataBitmap;
     }
 
     public void setData(byte[] data) {
-        this.data = data;
+        this.data = data.clone();
     }
 
     public String getEmail() {

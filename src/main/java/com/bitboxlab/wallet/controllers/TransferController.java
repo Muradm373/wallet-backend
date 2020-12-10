@@ -36,7 +36,7 @@ public class TransferController {
      */
     @PostMapping("/create-transfer")
     public ResponseEntity<ResponseMessage> createTransfer(Authentication authentication,@RequestBody Transfer transferDetails) {
-        String message = "";
+        String message;
         try {
             Transfer transfer = transferStorageService.store(transferDetails);
 
@@ -55,15 +55,13 @@ public class TransferController {
      */
     @PostMapping("/create-notification")
     public ResponseEntity<ResponseMessage> createNotification(@RequestBody PaymentNotificationRequest notification) {
-        String message = "";
+        String message;
         try {
             Transfer transfer = transferStorageService.store(notification.getTransfer());
             for (String userEmail: notification.getUsers()) {
                 User user = repository.findByEmail(userEmail);
                 PaymentNotification paymentNotification = new PaymentNotification(transfer, user, LocalDateTime.now());
                 notificationRepository.save(paymentNotification);
-
-                System.out.println( paymentNotification.getUser().getEmail()+"/queue/messages");
 
                 messagingTemplate.convertAndSendToUser(
                         paymentNotification.getUser().getEmail(),"/queue/messages",
