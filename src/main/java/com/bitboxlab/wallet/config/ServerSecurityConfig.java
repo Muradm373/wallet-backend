@@ -38,6 +38,9 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * List of links accepted by the server without authentication
+     */
     private static final String[] AUTH_WHITELIST = {
             "/v2/api-docs",
             "/swagger-resources",
@@ -49,6 +52,10 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
             "/"
     };
 
+    /**
+     * Encoder for the password of the user
+     * @return Encoder
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -59,7 +66,11 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
-
+    /**
+     * Configuring whitelists and filter chain of the routes
+     * @param http Request by user
+     * @throws Exception Cors policy unmet exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
@@ -76,6 +87,10 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+    /**
+     * Enabling cors policy for development stage
+     * @return
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource()
     {

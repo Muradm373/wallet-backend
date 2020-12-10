@@ -6,6 +6,10 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 
+
+/**
+ * Utilities which help to create and parse existing authentication tokens of the user
+ */
 public class JwtUtil {
 
     @Value("${jwt.secret}")

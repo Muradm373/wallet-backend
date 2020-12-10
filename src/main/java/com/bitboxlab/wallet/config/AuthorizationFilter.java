@@ -22,6 +22,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         super(authenticationManager);
     }
 
+    /**
+     * Filter unauthorized requests out
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
@@ -35,6 +38,10 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request,response);
     }
 
+    /**
+     * Creating authentication token for logged in user
+     * @return Newly generated authentication token
+     */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request)
     {
         String token = request.getHeader("Authorization");

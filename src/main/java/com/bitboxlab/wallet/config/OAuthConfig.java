@@ -30,7 +30,9 @@ public class OAuthConfig extends UsernamePasswordAuthenticationFilter {
     }
 
 
-
+    /**
+     * Logging in authorization
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (CorsUtils.isPreFlightRequest(request)) {
@@ -48,6 +50,11 @@ public class OAuthConfig extends UsernamePasswordAuthenticationFilter {
         }
     }
 
+
+    /**
+     * Generating response header and body for requests
+     * @param request Request sent by user
+     */
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) {
         String token = Jwts.builder()
                 .setSubject(((User) authentication.getPrincipal()).getUsername())

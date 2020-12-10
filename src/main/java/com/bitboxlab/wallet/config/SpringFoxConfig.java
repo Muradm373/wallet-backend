@@ -7,6 +7,10 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+
+/**
+ * Adding Spring Fox configuration for Swagger support
+ */
 @Configuration
 public class SpringFoxConfig {
     @Bean
