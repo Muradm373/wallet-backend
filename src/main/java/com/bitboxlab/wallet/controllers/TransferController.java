@@ -1,11 +1,9 @@
 package com.bitboxlab.wallet.controllers;
 
 import com.bitboxlab.wallet.models.*;
-import com.bitboxlab.wallet.models.message.ResponseFile;
 import com.bitboxlab.wallet.models.message.ResponseMessage;
 import com.bitboxlab.wallet.repo.NotificationRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
-import com.bitboxlab.wallet.services.ImageStorageService;
 import com.bitboxlab.wallet.services.TransferStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,12 +13,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin
 @Controller
@@ -36,11 +30,9 @@ public class TransferController {
 
     /**
      * Creating money transfer request
-     * @param authentication
-     * User authentication token
-     * @param transferDetails
-     * Details of the requested transfer
-     * @return status code of creating a transfer
+     * @param authentication Authentication token of the user
+     * @param transferDetails Details of the requested transfer
+     * @return Status code of request
      */
     @PostMapping("/create-transfer")
     public ResponseEntity<ResponseMessage> createTransfer(Authentication authentication,@RequestBody Transfer transferDetails) {
@@ -58,9 +50,8 @@ public class TransferController {
 
     /**
      * Creating push notification for money transfer request
-     * @param notification
-     * Notification details view Notification model
-     * @return status code for notification creation
+     * @param notification Details of fetched notification
+     * @return Status code of request
      */
     @PostMapping("/create-notification")
     public ResponseEntity<ResponseMessage> createNotification(@RequestBody PaymentNotificationRequest notification) {
@@ -90,9 +81,9 @@ public class TransferController {
 
 
     /**
-     * Get transfer details by id
-     * @param id
-     * @return details of transfer
+     * Get transfer details by identification number of transaction
+     * @param id Identification number of requested transfer
+     * @return Details of the requested transfer
      */
     @GetMapping("/transfers/{id}")
     public ResponseEntity<TransferResponse> getTransfer(@PathVariable String id) {

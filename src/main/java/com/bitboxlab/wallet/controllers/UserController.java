@@ -1,14 +1,7 @@
 package com.bitboxlab.wallet.controllers;
 
-import com.bitboxlab.wallet.models.Contact;
 import com.bitboxlab.wallet.models.User;
-import com.bitboxlab.wallet.models.Wallet;
-import com.bitboxlab.wallet.repo.ContactRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
-import com.bitboxlab.wallet.utils.JwtUtil;
-import io.fusionauth.jwks.domain.JSONWebKey;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -31,9 +23,9 @@ public class UserController {
 
 
     /**
-     * Create user account
-     * @param user
-     * @return status code for registration
+     * Create a new account in the application
+     * @param user Information details of the user
+     * @return Status code for request
      */
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody User user)
@@ -48,9 +40,9 @@ public class UserController {
     }
 
     /**
-     * Get user information details by his authentication token
-     * @param authentication
-     * @return User information details
+     * Get user information details by its authentication token
+     * @param authentication Authentication token of the user
+     * @return Information details of the user
      */
     @PostMapping("/info")
     public ResponseEntity<User> getUserByAuth(Authentication authentication){
@@ -60,8 +52,8 @@ public class UserController {
     }
 
     /**
-     * Search users by their username/email/name
-     * @param user
+     * Search users by its username/email/name
+     * @param user Email/Username/Name/Surname of the user that will be searched
      * @return List of users
      */
     @GetMapping("/search")
@@ -83,6 +75,11 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Delete user by its identification number
+     * @param id Identification number of the user
+     * @return Status code of the request
+     */
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
         User user = repository.findById(id).orElse(null);

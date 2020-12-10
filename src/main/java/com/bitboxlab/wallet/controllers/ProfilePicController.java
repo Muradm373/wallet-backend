@@ -2,7 +2,6 @@ package com.bitboxlab.wallet.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import com.bitboxlab.wallet.models.ProfilePic;
 import com.bitboxlab.wallet.models.User;
 import com.bitboxlab.wallet.models.message.ResponseFile;
@@ -29,12 +28,10 @@ public class ProfilePicController {
     UserRepository userRepository;
 
     /**
-     *
-     * Uploading profile picture to the database and assigning it to user
-     * @param authentication
-     * Berarer token of the logged in user
-     * @param file
-     * Profile picture file
+     * Uploading profile picture which will be assigned to authenticated user
+     * @param authentication Authentication token of the user
+     * @param file Fetched profile picture
+     * @return Status code of request
      */
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(Authentication authentication, @RequestParam("file") MultipartFile file) {
@@ -55,7 +52,8 @@ public class ProfilePicController {
     }
 
     /**
-     * Get all files from the database and assigned users
+     * Get all files which were uploaded
+     * @return Status code of request
      */
     @GetMapping("/files")
     public ResponseEntity<List<ResponseFile>> getListFiles() {
@@ -78,9 +76,9 @@ public class ProfilePicController {
     }
 
     /**
-     * Get profile picture of the user by id
-     * @param id
-     * Profile picture id
+     * Fetch profile picture by identification string
+     * @param id Identification string of the picture
+     * @return Status code of request
      */
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
@@ -94,7 +92,8 @@ public class ProfilePicController {
 
     /**
      * Remove profile picture of authenticated user
-     * @param authentication
+     * @param authentication  Authentication token of the user
+     * @return Status code of request
      */
     @DeleteMapping("/profilepic")
     public ResponseEntity<ResponseMessage> removeProfilePic(Authentication authentication) {

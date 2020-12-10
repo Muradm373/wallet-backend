@@ -10,14 +10,10 @@ import com.bitboxlab.wallet.repo.NotificationRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
 import com.bitboxlab.wallet.services.TransferStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +24,10 @@ public class NotificationWebsocketController {
     @Autowired private SimpMessagingTemplate messagingTemplate;
     @Autowired private TransferStorageService transferStorageService;
 
+    /**
+     * Request for notifying a user about outgoing notification to a notification center web socket
+     * @param notification Details of requested money transfer
+     */
     @MessageMapping("/notify-request")
     public void createNotification(@Payload PaymentNotificationRequest notification) {
         String message = "";

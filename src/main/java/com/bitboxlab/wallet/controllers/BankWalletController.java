@@ -1,10 +1,7 @@
 package com.bitboxlab.wallet.controllers;
 
 import com.bitboxlab.wallet.models.BankWallet;
-import com.bitboxlab.wallet.models.Contact;
 import com.bitboxlab.wallet.models.User;
-import com.bitboxlab.wallet.models.Wallet;
-import com.bitboxlab.wallet.repo.ContactRepository;
 import com.bitboxlab.wallet.repo.UserRepository;
 import com.bitboxlab.wallet.repo.BankWalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,12 @@ public class BankWalletController {
     @Autowired
     UserRepository repository;
 
+    /**
+     * Adding bank wallet into user's wallets list
+     * @param authentication Authentication token
+     * @param wallet Details of added bank wallet
+     * @return Status code of request
+     */
     @PostMapping("/wallet_bank")
     public ResponseEntity<BankWallet> addWalletToUser(Authentication authentication, @RequestBody BankWallet wallet){
         User user = repository.findByEmail(authentication.getName());
@@ -35,6 +38,11 @@ public class BankWalletController {
 
     }
 
+    /**
+     * Get bank wallets of the user by its authentication token
+     * @param authentication Authentication token
+     * @return List of user's bank wallets
+     */
     @RequestMapping(value = "/wallet_bank", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BankWallet>> getWalletsOfUser(Authentication authentication){
         User user = repository.findByEmail(authentication.getName());
@@ -43,6 +51,12 @@ public class BankWalletController {
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
+    /**
+     * Edit existing bank wallet by its identification number
+     * @param authentication Authentication token
+     * @param wallet Details of altered bank wallet
+     * @return Status code of request
+     */
     @RequestMapping(value = "/wallet_bank", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BankWallet> editWallet(Authentication authentication, @RequestBody BankWallet wallet){
         User user = repository.findByEmail(authentication.getName());
@@ -52,6 +66,11 @@ public class BankWalletController {
         return new ResponseEntity<>(wallet, HttpStatus.NO_CONTENT);
     }
 
+    /**
+     *  Delete bank wallet from user's wallets list by its identification number
+     * @param id Identification number of deleted bank wallet
+     * @return Status code of request
+     */
     @RequestMapping(value = "/wallets_bank/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteWallet(@PathVariable Long id){
         BankWallet wallet = bankWalletRepository.findById(id).orElse(null);
